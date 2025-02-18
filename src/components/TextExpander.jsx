@@ -1,21 +1,33 @@
 import {useState} from "react";
 
-function TextExpander({collapsedNumWords,
+function TextExpander({
+                          collapsedNumWords = 10,
                           expandButtonText = "Show more",
                           collapseButtonText = "Show less",
-                          buttonColor,
+                          buttonColor = "blue",
                           expanded = false,
                           className,
                           children,
                       }) {
     const [isExpanded, setIsExpanded] = useState(expanded);
 
-    const displayText = isExpanded ? children : "temp";
+    const displayText = isExpanded ?
+        children :
+        children.split(' ').slice(0, collapsedNumWords).join(' ') + "...";
+
+    const buttonStyle = {
+        background: 'none',
+        border: 'none',
+        font: 'inherit',
+        cursor: 'pointer',
+        marginLeft: '6px',
+        color: buttonColor,
+    }
 
     return (
         <div className={className}>
             <span>{displayText}</span>
-            <button onClick={()=>setIsExpanded(!isExpanded)}>
+            <button onClick={()=>setIsExpanded(!isExpanded)} style={buttonStyle}>
                 {isExpanded ? collapseButtonText : expandButtonText}
             </button>
         </div>
